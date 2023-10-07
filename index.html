@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="counter.js"></script>
     <title>Project IF</title>
 </head>
 <body>
@@ -19,19 +20,19 @@
         <div id="resources">
             <div id="wood">
                 <label for="">Wood</label>
-                <p>0</p>
+                <p id="value_wood">50</p>
             </div>
             <div id="stone">
                 <label for="">Stone</label>
-                <p>0</p>
+                <p  id="value_stone">50</p>
             </div>
             <div id="food">
                 <label for="">Food</label>
-                <p>0</p>
+                <p  id="value_food">100</p>
             </div>
             <div id="gold">
                 <label for="">Gold</label>
-                <p>0</p>
+                <p  id="value_gold">100</p>
             </div>
         </div>
     </header>
@@ -39,26 +40,22 @@
     <div id="menu_compras">
         <div id="wood_maker">
             <div>
-                <button id="wood_maker" 
-                        onclick="add_maker('wood_maker',price_WoodMaker)" 
-                        onmouseover="showToolTip('wood_maker','toolTip_wood_maker',price_WoodMaker, 'Wood: ' , valorAtual_wood,'Stone: ' , valorAtual_stone)" 
-                        onmouseout="hideToolTip('wood_maker','toolTip_wood_maker')" >
-                Buy Wood Maker</button>
-
+                <button id="wood_maker" onclick="add_maker('wood_maker',price_WoodMaker)" >
+                    <img src="./Idle_masters/hud/Icons/Craft Icons/Woodchopper.png"></button>
                 <span id="toolTip_wood_maker"></span>
             </div>
             <p>1</p>
         </div>
         <div id="stone_maker">
             <div>
-                <button id="stone_maker" 
-                        onclick="add_maker('stone_maker',price_StoneMaker)" 
-                        onmouseover="showToolTip('stone_maker','toolTip_stone_maker',price_WoodMaker, 'Wood: ' , valorAtual_wood,'Stone: ' , valorAtual_stone)" 
-                        onmouseout="hideToolTip('stone_maker','toolTip_stone_maker')" >
-                Buy Wood Maker</button>
+                <button id="stone_maker" onclick="buyStoneProd(),showToolTip('stone_maker','toolTip_stone_maker', `Wood: ${(parseInt(getElementById('stone_maker_num').textContent)*15)} , Stone: ${(parseInt(getElementById('stone_maker_num').textContent)*8)}`)"
+                onmouseover="showToolTip('stone_maker','toolTip_stone_maker', `Wood: ${(parseInt(getElementById('stone_maker_num').textContent)*15)} , Stone: ${(parseInt(getElementById('stone_maker_num').textContent)*8)}`)" 
+                onmouseout="hideToolTip('stone_maker','toolTip_stone_maker')">
+                    <img src="./Idle_masters/hud/Icons/Craft Icons/stoneCutter.png"> - Buy Stone Cutter</img>
+                </button>
                 <span id="toolTip_stone_maker"></span>
             </div>
-            <p>1</p>
+            <p id="stone_maker_num">1</p>
         </div>
         <div id="food_maker">
             <div>
@@ -78,226 +75,6 @@
 </body>
 </html>
 
-<script>
-    const wood = document.getElementById('wood');
-    const wood_value = wood.querySelector('p');
-    let price_WoodMaker = ["Wood: ",parseInt(get_maker_value("wood_maker").textContent)*10 ,"Stone: ", parseInt(get_maker_value("stone_maker").textContent)*5];
-    let valorAtual_wood = parseInt(wood_value.textContent);
-
-    const stone = document.getElementById('stone');
-    const stone_value = stone.querySelector('p');
-    let price_StoneMaker = ["Wood: ",parseInt(get_maker_value("wood_maker").textContent)*8 ,"Stone: ", parseInt(get_maker_value("stone_maker").textContent)*15];
-    let valorAtual_stone = parseInt(stone_value.textContent);
-
-    const food = document.getElementById('food');
-    const food_value = food.querySelector('p');
-    let price_FoodMaker = ["Wood: ",parseInt(get_maker_value("wood_maker").textContent)*10 ,"Stone: ", parseInt(get_maker_value("stone_maker").textContent)*10];
-    let valorAtual_food = parseInt(food_value.textContent);
-
-    const gold = document.getElementById('gold');
-    const gold_value = gold.querySelector('p');
-    let price_goldMaker = 0;
-    let valorAtual_gold = parseInt(gold_value.textContent);
-
-    let makers_price = [price_WoodMaker,price_StoneMaker,price_FoodMaker,price_goldMaker];
-
-    let lastTime = null;
-    requestAnimationFrame(loop);
-
-    // Chamar a função updateResources a cada segundo (1000 milissegundos)
-    setInterval(updateResources, 1000);
-
-
-    function loop(timestamp) {
-        console.log("entrou timestamp");
-        if (!lastTime) lastTime = timestamp;
-        const deltaTime = (timestamp - lastTime) / 1000; // Converter para segundos
-        lastTime = timestamp;
-
-        console.log("chegou no wood");
-        wood_value.textContent = `${updateValue(deltaTime,'wood',valorAtual_wood)}`;
-
-        console.log(document.getElementById('stone'));
-        if(document.getElementById('stone')!=null)
-        {
-            console.log("entrou stone");
-            stone_value.textContent = `${updateValue(deltaTime,'stone',valorAtual_stone)}`;
-        }
-
-        console.log(document.getElementById('food'));
-        if(document.getElementById('food')!=null)
-        {
-            console.log("entrou food");
-            food_value.textContent = `${updateValue(deltaTime,'food',valorAtual_food)}`;
-        }
-
-        console.log(document.getElementById('gold'));
-        if(document.getElementById('gold')!=null)
-        {
-            console.log("entrou gold");
-            gold_value.textContent = `${updateValue(deltaTime,'gold',valorAtual_gold)}`;
-            valorAtual_gold = parseInt(gold_value.textContent);
-        }
-        
-    }
-
-    function updateValue(deltaTime, resource, resource_value) {
-        // Atualize a variável com base no valor de deltaTime (tempo decorrido desde a última atualização)
-        if (document.getElementById(`${resource}_maker`)) {
-            let valorAdicional = null;
-            let valorAtual = resource_value;
-            const maker = document.getElementById(`${resource}_maker`);
-            const maker_value = maker.querySelector('p').textContent;
-            if (parseInt(maker_value) > 0) {
-                valorAdicional = 1 * maker_value; // Valor X que será adicionado
-            } else {
-                valorAdicional = 0;
-            }
-            valorAtual += valorAdicional;
-            return valorAtual;
-        }
-        return resource_value;
-    }
-    
-    function add_maker(resource, price) 
-    {
-        let price_array = [0,0,0,0];
-        
-        let maker_value = get_maker_value(resource);
-        let resource_to_take = "";
-        let final_price = [0,0,0,0];
-        let f = 0;
-        console.log(` typeof price ===>>>> ${typeof(price)}`);
-        console.log(`final price: => ${final_price}`);
-        for(let i = 0; price.length > i; i++)
-        {
-            console.log(`i=${i} f=${f}`);
-            if(isOdd(i))
-            {
-                console.log(i);
-                console.log(`final price |||||||||||= ${final_price} -> ${price_array}`);
-                console.log(`será adicionado ao array => ${price[i]}`)
-                price_array[f] = price[i];
-                console.log(price);
-            }
-            if(isEven(i)||i===0)
-            {
-                console.log(`price[i] = > ${price[i]}`);
-                console.log(`price[i] text content =>> ${price[i]}`);
-                if(price[i].includes("Wood:"))
-                {
-                    console.log("f mudou");
-                    f = 0;
-                }
-                if(price[i].includes("Stone:"))
-                {
-                    console.log("f mudou");
-                    f = 1;
-                }
-                if(price[i].textContent === "Food: ")
-                {
-                    f = 2;
-                }
-                if(price[i].textContent === "Gold: ")
-                {
-                    f = 3;
-                }
-            }
-        }
-        console.log(`final price: ====> ${price_array}`);
-        if(resource)//checar preço e recurso
-        {
-            takeResources(price_array);
-            price_WoodMaker = ["Wood: ",
-                                Math.floor((parseInt(get_maker_value("wood_maker").textContent)*10)*(parseInt(get_maker_value("wood_maker").textContent)*1.07)) ,
-                                "Stone: ",
-                                Math.floor((parseInt(get_maker_value("wood_maker").textContent)*5)*(parseInt(get_maker_value("wood_maker").textContent)*1.07))];
-            console.log("entrou if(resource)");
-            maker_value.textContent = (parseInt(maker_value.textContent) + 1 );
-        }
-        
-    }
-
-    function isEven(number) {
-    return number % 2 === 0;
-    }
-
-    function isOdd(number) {
-    return number % 2 !== 0;
-    }
-
-    function get_maker_value(resource)
-    {
-        const maker = document.getElementById(resource);
-        let maker_value = maker.querySelector('p');
-        console.log(`vai virar parseInt : ${maker_value.textContent}`);
-        console.log(`${typeof(maker_value.textContent)}`);
-        return maker_value;
-    }
-
-    function takeResources(array) {
-        // Atualizar os valores dos recursos usando a função updateValue
-        valorAtual_wood = updateValue(1, 'wood', valorAtual_wood-=array[0]);
-        valorAtual_stone = updateValue(1, 'stone', valorAtual_stone-=array[1]);
-        valorAtual_food = updateValue(1, 'food', valorAtual_food-=array[2]);
-        valorAtual_gold = updateValue(1, 'gold', valorAtual_gold-=array[3]);
-
-        // Atualizar os elementos HTML com os novos valores dos recursos
-        wood_value.textContent = valorAtual_wood;
-        stone_value.textContent = valorAtual_stone;
-        food_value.textContent = valorAtual_food;
-        gold_value.textContent = valorAtual_gold;
-    }
-
-    function updateResources() {
-        // Atualizar os valores dos recursos usando a função updateValue
-        valorAtual_wood = updateValue(1, 'wood', valorAtual_wood);
-        valorAtual_stone = updateValue(1, 'stone', valorAtual_stone);
-        valorAtual_food = updateValue(1, 'food', valorAtual_food);
-        valorAtual_gold = updateValue(1, 'gold', valorAtual_gold);
-
-        // Atualizar os elementos HTML com os novos valores dos recursos
-        wood_value.textContent = valorAtual_wood;
-        stone_value.textContent = valorAtual_stone;
-        food_value.textContent = valorAtual_food;
-        gold_value.textContent = valorAtual_gold;
-    }
-
-    function showToolTip(id_button, id_toolTip, price, ...resource){
-        const tooltip = document.getElementById(`${id_toolTip}`);
-        let res = [...resource];
-        let resTratado = [];
-        
-        for(let i = 0; res.length>i; i++)
-        {
-            if(res[i]===Number)
-            {
-                resTratado.push(parseInt(res[i]));
-            }
-            else
-            {
-                resTratado.push(res[i]);
-            }
-            
-        }
-        
-        const button = document.getElementById(`${id_button}`);
-        const rect = button.getBoundingClientRect();
-
-        tooltip.style.display = "block";
-        tooltip.innerHTML = `Price: ${price} \n Resources: ${resTratado}`;
-        
-        
-        tooltip.style.left = rect.left + rect.width / 2 + "px";
-        tooltip.style.top = rect.top + "px";
-    }
-    
-    function hideToolTip(id_button, id_toolTip)
-    {
-        const tooltip = document.getElementById(`${id_toolTip}`);
-        tooltip.style.display = "none";
-    }
-</script>
 
 
 
