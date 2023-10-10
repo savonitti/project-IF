@@ -29,32 +29,51 @@ function get_maker_value(resource)
 
     
 function buyWoodProd() {
-const wood = document.getElementById('wood');
-const wood_value = wood.querySelector('p');
-let price_WoodMaker = ["Wood: ",parseInt(get_maker_value("wood_maker").textContent)*10 ,"Stone: ", parseInt(get_maker_value("stone_maker").textContent)*5];
-let valorAtual_wood = parseInt(wood_value.textContent);
-woodMaker += 1;
-return woodMaker, price_WoodMaker, valorAtual_wood;
+    console.log("entrou buyWoodProd");
+    let value_stone = document.getElementById("value_stone");
+    let value_wood = document.getElementById("value_wood");
+    let value_woodProd = document.getElementById('value_wood_maker');
+
+    //set price
+    let price_WoodMaker = [
+        //stone price
+        parseInt(get_maker_value("wood_maker").textContent)*20 ,
+        //wood price
+        parseInt(get_maker_value("wood_maker").textContent)*10
+        ];
+
+    if(value_stone.textContent>=price_WoodMaker[0] && value_wood.textContent>=price_WoodMaker[1])
+    {
+        console.log("Tem recurso p comprar");
+        value_stone.textContent = parseInt(value_stone.textContent - price_WoodMaker[0]);
+        value_wood.textContent = parseInt(value_wood.textContent - price_WoodMaker[1]);
+        value_woodProd.textContent = parseInt(value_woodProd.textContent) + 1;
+    }
 }
 
-function buyStoneProd(Resource) {
-console.log("entrou buyStoneProd");
-let stone_value = document.getElementById("value_stone");
-let wood_value = document.getElementById("value_wood");
-const stoneProd = document.getElementById('stone_maker');
-let stoneProd_value = stoneProd.querySelector('p');
-//set price
-let price_StoneMaker = [parseInt(get_maker_value("stone_maker").textContent)*8 , parseInt(get_maker_value("stone_maker").textContent)*15];
+function buyStoneProd() {
+    console.log("entrou buyStoneProd");
+    let stone_value = document.getElementById("value_stone");
+    let wood_value = document.getElementById("value_wood");
+    let stoneProd_value = document.getElementById('value_stone_maker');
 
-if(stone_value.textContent>=price_StoneMaker[0] && wood_value.textContent>=price_StoneMaker[1])
-{
-    console.log("Tem recurso p comprar");
-    stone_value.textContent = parseInt(stone_value.textContent - price_StoneMaker[0]);
-    wood_value.textContent = parseInt(wood_value.textContent - price_StoneMaker[1]);
-    stoneProd_value.textContent = parseInt(stoneProd_value.textContent) + 1;
-        
+    //set price
+    let price_StoneMaker = [
+        //stone price
+        parseInt(get_maker_value("stone_maker").textContent)*10 , 
+        //wood price
+        parseInt(get_maker_value("stone_maker").textContent)*20
+    ];
+
+    if(stone_value.textContent>=price_StoneMaker[0] && wood_value.textContent>=price_StoneMaker[1])
+    {
+        console.log("Tem recurso p comprar");
+        stone_value.textContent = parseInt(stone_value.textContent - price_StoneMaker[0]);
+        wood_value.textContent = parseInt(wood_value.textContent - price_StoneMaker[1]);
+        stoneProd_value.textContent = parseInt(stoneProd_value.textContent) + 1;
+    }
 }
-}
+
 
 function buyFoodProd() {
 const food = document.getElementById('food');

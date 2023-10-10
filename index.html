@@ -40,22 +40,24 @@
     <div id="menu_compras">
         <div id="wood_maker">
             <div>
-                <button id="wood_maker" onclick="add_maker('wood_maker',price_WoodMaker)" >
-                    <img src="./Idle_masters/hud/Icons/Craft Icons/Woodchopper.png"></button>
+                <button id="wood_maker" onclick="buyWoodProd(),showToolTip('wood_maker','toolTip_wood_maker', `Wood: ${(parseInt(getElementById('value_wood_maker').textContent)*10)} , Stone: ${(parseInt(getElementById('value_wood_maker').textContent)*20)}`)"
+                onmouseover="showToolTip('wood_maker','toolTip_wood_maker', `Wood: ${(parseInt(getElementById('value_wood_maker').textContent)*10)} , Stone: ${(parseInt(getElementById('value_wood_maker').textContent)*20)}`)" 
+                onmouseout="hideToolTip('wood_maker','toolTip_wood_maker')"> >
+                    <img src="./Idle_masters/hud/Icons/Craft Icons/Woodchopper.png"> - Buy Wood Cutter</button>
                 <span id="toolTip_wood_maker"></span>
             </div>
-            <p>1</p>
+            <p id="value_wood_maker">1</p>
         </div>
         <div id="stone_maker">
             <div>
-                <button id="stone_maker" onclick="buyStoneProd(),showToolTip('stone_maker','toolTip_stone_maker', `Wood: ${(parseInt(getElementById('stone_maker_num').textContent)*15)} , Stone: ${(parseInt(getElementById('stone_maker_num').textContent)*8)}`)"
-                onmouseover="showToolTip('stone_maker','toolTip_stone_maker', `Wood: ${(parseInt(getElementById('stone_maker_num').textContent)*15)} , Stone: ${(parseInt(getElementById('stone_maker_num').textContent)*8)}`)" 
+                <button id="stone_maker" onclick="buyStoneProd(),showToolTip('stone_maker','toolTip_stone_maker', `Wood: ${(parseInt(getElementById('value_stone_maker').textContent)*20)} , Stone: ${(parseInt(getElementById('value_stone_maker').textContent)*10)}`)"
+                onmouseover="showToolTip('stone_maker','toolTip_stone_maker', `Wood: ${(parseInt(getElementById('value_stone_maker').textContent)*20)} , Stone: ${(parseInt(getElementById('value_stone_maker').textContent)*10)}`)" 
                 onmouseout="hideToolTip('stone_maker','toolTip_stone_maker')">
                     <img src="./Idle_masters/hud/Icons/Craft Icons/stoneCutter.png"> - Buy Stone Cutter</img>
                 </button>
                 <span id="toolTip_stone_maker"></span>
             </div>
-            <p id="stone_maker_num">1</p>
+            <p id="value_stone_maker">1</p>
         </div>
         <div id="food_maker">
             <div>
